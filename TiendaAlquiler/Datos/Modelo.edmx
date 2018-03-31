@@ -1,0 +1,689 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TiendaPeliculasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Adress" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Movie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="CategoryId" Type="int" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Stock" Type="int" />
+          <Property Name="Exhausted" Type="bit" />
+          <Property Name="Status" Type="bit" />
+        </EntityType>
+        <EntityType Name="ParametersRental">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CostPerday" Type="float" />
+          <Property Name="CostRental" Type="float" />
+          <Property Name="CostRentalExhausted" Type="float" />
+          <Property Name="Penality" Type="float" />
+          <Property Name="MaxDay" Type="int" />
+        </EntityType>
+        <EntityType Name="RentalDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RentalId" Type="int" />
+          <Property Name="MovieId" Type="int" />
+          <Property Name="Price" Type="float" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="SubTotal" Type="float" />
+          <Property Name="isDevuelta" Type="bit" />
+        </EntityType>
+        <EntityType Name="RentalMovie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="clientId" Type="int" Nullable="false" />
+          <Property Name="DateRental" Type="datetime" />
+          <Property Name="Days" Type="int" />
+          <Property Name="DateRetund" Type="datetime" />
+          <Property Name="QuantityMovie" Type="int" />
+          <Property Name="Total" Type="float" Nullable="false" />
+          <Property Name="StatusId" Type="int" />
+          <Property Name="UserId" Type="int" />
+        </EntityType>
+        <EntityType Name="ReturnMovie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MovieId" Type="int" />
+          <Property Name="clientId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="DateReturn" Type="datetime" />
+          <Property Name="RentalDetailsId" Type="int" Nullable="false" />
+          <Property Name="Penality" Type="bit" />
+          <Property Name="Mount" Type="float" />
+          <Property Name="Status" Type="bit" />
+          <Property Name="UserId" Type="int" />
+        </EntityType>
+        <EntityType Name="StatusRental">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UsarName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <Association Name="FK__Movie__CategoryI__267ABA7A">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Movie" Type="Self.Movie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Movie">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RentalDet__Movie__2A4B4B5E">
+          <End Role="Movie" Type="Self.Movie" Multiplicity="0..1" />
+          <End Role="RentalDetail" Type="Self.RentalDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RentalDetail">
+              <PropertyRef Name="MovieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RentalDet__Renta__29572725">
+          <End Role="RentalMovie" Type="Self.RentalMovie" Multiplicity="0..1" />
+          <End Role="RentalDetail" Type="Self.RentalDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RentalMovie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RentalDetail">
+              <PropertyRef Name="RentalId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RentalMov__clien__1A14E395">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="RentalMovie" Type="Self.RentalMovie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RentalMovie">
+              <PropertyRef Name="clientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RentalMov__Statu__1B0907CE">
+          <End Role="StatusRental" Type="Self.StatusRental" Multiplicity="0..1" />
+          <End Role="RentalMovie" Type="Self.RentalMovie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusRental">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RentalMovie">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RentalMov__UserI__31EC6D26">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+          <End Role="RentalMovie" Type="Self.RentalMovie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RentalMovie">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ReturnMov__clien__37A5467C">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="ReturnMovie" Type="Self.ReturnMovie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReturnMovie">
+              <PropertyRef Name="clientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ReturnMov__Movie__36B12243">
+          <End Role="Movie" Type="Self.Movie" Multiplicity="0..1" />
+          <End Role="ReturnMovie" Type="Self.ReturnMovie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReturnMovie">
+              <PropertyRef Name="MovieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ReturnMov__Renta__38996AB5">
+          <End Role="RentalDetail" Type="Self.RentalDetail" Multiplicity="1" />
+          <End Role="ReturnMovie" Type="Self.ReturnMovie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RentalDetail">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReturnMovie">
+              <PropertyRef Name="RentalDetailsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ReturnMov__UserI__398D8EEE">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+          <End Role="ReturnMovie" Type="Self.ReturnMovie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReturnMovie">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TiendaPeliculasModelStoreContainer">
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Movie" EntityType="Self.Movie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParametersRental" EntityType="Self.ParametersRental" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RentalDetail" EntityType="Self.RentalDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RentalMovie" EntityType="Self.RentalMovie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReturnMovie" EntityType="Self.ReturnMovie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StatusRental" EntityType="Self.StatusRental" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Movie__CategoryI__267ABA7A" Association="Self.FK__Movie__CategoryI__267ABA7A">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Movie" EntitySet="Movie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RentalDet__Movie__2A4B4B5E" Association="Self.FK__RentalDet__Movie__2A4B4B5E">
+            <End Role="Movie" EntitySet="Movie" />
+            <End Role="RentalDetail" EntitySet="RentalDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RentalDet__Renta__29572725" Association="Self.FK__RentalDet__Renta__29572725">
+            <End Role="RentalMovie" EntitySet="RentalMovie" />
+            <End Role="RentalDetail" EntitySet="RentalDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RentalMov__clien__1A14E395" Association="Self.FK__RentalMov__clien__1A14E395">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="RentalMovie" EntitySet="RentalMovie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RentalMov__Statu__1B0907CE" Association="Self.FK__RentalMov__Statu__1B0907CE">
+            <End Role="StatusRental" EntitySet="StatusRental" />
+            <End Role="RentalMovie" EntitySet="RentalMovie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RentalMov__UserI__31EC6D26" Association="Self.FK__RentalMov__UserI__31EC6D26">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="RentalMovie" EntitySet="RentalMovie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ReturnMov__clien__37A5467C" Association="Self.FK__ReturnMov__clien__37A5467C">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="ReturnMovie" EntitySet="ReturnMovie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ReturnMov__Movie__36B12243" Association="Self.FK__ReturnMov__Movie__36B12243">
+            <End Role="Movie" EntitySet="Movie" />
+            <End Role="ReturnMovie" EntitySet="ReturnMovie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ReturnMov__Renta__38996AB5" Association="Self.FK__ReturnMov__Renta__38996AB5">
+            <End Role="RentalDetail" EntitySet="RentalDetail" />
+            <End Role="ReturnMovie" EntitySet="ReturnMovie" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ReturnMov__UserI__398D8EEE" Association="Self.FK__ReturnMov__UserI__398D8EEE">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="ReturnMovie" EntitySet="ReturnMovie" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TiendaPeliculasModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Movies" Relationship="Self.FK__Movie__CategoryI__267ABA7A" FromRole="Category" ToRole="Movie" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Adress" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RentalMovies" Relationship="Self.FK__RentalMov__clien__1A14E395" FromRole="Client" ToRole="RentalMovie" />
+          <NavigationProperty Name="ReturnMovies" Relationship="TiendaPeliculasModel.FK__ReturnMov__clien__37A5467C" FromRole="Client" ToRole="ReturnMovie" />
+        </EntityType>
+        <EntityType Name="Movie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Stock" Type="Int32" />
+          <Property Name="Exhausted" Type="Boolean" />
+          <Property Name="Status" Type="Boolean" />
+          <NavigationProperty Name="Category" Relationship="Self.FK__Movie__CategoryI__267ABA7A" FromRole="Movie" ToRole="Category" />
+          <NavigationProperty Name="RentalDetails" Relationship="Self.FK__RentalDet__Movie__2A4B4B5E" FromRole="Movie" ToRole="RentalDetail" />
+          <NavigationProperty Name="ReturnMovies" Relationship="TiendaPeliculasModel.FK__ReturnMov__Movie__36B12243" FromRole="Movie" ToRole="ReturnMovie" />
+        </EntityType>
+        <EntityType Name="ParametersRental">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CostPerday" Type="Double" />
+          <Property Name="CostRental" Type="Double" />
+          <Property Name="CostRentalExhausted" Type="Double" />
+          <Property Name="Penality" Type="Double" />
+          <Property Name="MaxDay" Type="Int32" />
+        </EntityType>
+        <EntityType Name="RentalDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Price" Type="Double" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="SubTotal" Type="Double" />
+          <NavigationProperty Name="Movie" Relationship="Self.FK__RentalDet__Movie__2A4B4B5E" FromRole="RentalDetail" ToRole="Movie" />
+          <NavigationProperty Name="RentalMovie" Relationship="Self.FK__RentalDet__Renta__29572725" FromRole="RentalDetail" ToRole="RentalMovie" />
+          <NavigationProperty Name="ReturnMovies" Relationship="TiendaPeliculasModel.FK__ReturnMov__Renta__38996AB5" FromRole="RentalDetail" ToRole="ReturnMovie" />
+          <Property Name="isDevuelta" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="RentalMovie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateRental" Type="DateTime" Precision="3" />
+          <Property Name="Days" Type="Int32" />
+          <Property Name="DateRetund" Type="DateTime" Precision="3" />
+          <Property Name="QuantityMovie" Type="Int32" />
+          <Property Name="Total" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Client" Relationship="Self.FK__RentalMov__clien__1A14E395" FromRole="RentalMovie" ToRole="Client" />
+          <NavigationProperty Name="RentalDetails" Relationship="Self.FK__RentalDet__Renta__29572725" FromRole="RentalMovie" ToRole="RentalDetail" />
+          <NavigationProperty Name="StatusRental" Relationship="Self.FK__RentalMov__Statu__1B0907CE" FromRole="RentalMovie" ToRole="StatusRental" />
+          <NavigationProperty Name="Usuario" Relationship="TiendaPeliculasModel.FK__RentalMov__UserI__31EC6D26" FromRole="RentalMovie" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="StatusRental">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RentalMovies" Relationship="Self.FK__RentalMov__Statu__1B0907CE" FromRole="StatusRental" ToRole="RentalMovie" />
+        </EntityType>
+        <Association Name="FK__Movie__CategoryI__267ABA7A">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Movie" Type="Self.Movie" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__RentalMov__clien__1A14E395">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="RentalMovie" Type="Self.RentalMovie" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__RentalDet__Movie__2A4B4B5E">
+          <End Role="Movie" Type="Self.Movie" Multiplicity="0..1" />
+          <End Role="RentalDetail" Type="Self.RentalDetail" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__RentalDet__Renta__29572725">
+          <End Role="RentalMovie" Type="Self.RentalMovie" Multiplicity="0..1" />
+          <End Role="RentalDetail" Type="Self.RentalDetail" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__RentalMov__Statu__1B0907CE">
+          <End Role="StatusRental" Type="Self.StatusRental" Multiplicity="0..1" />
+          <End Role="RentalMovie" Type="Self.RentalMovie" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="TiendaPeliculasEntities">
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="Movies" EntityType="Self.Movie" />
+          <EntitySet Name="ParametersRentals" EntityType="Self.ParametersRental" />
+          <EntitySet Name="RentalDetails" EntityType="Self.RentalDetail" />
+          <EntitySet Name="RentalMovies" EntityType="Self.RentalMovie" />
+          <EntitySet Name="StatusRentals" EntityType="Self.StatusRental" />
+          <AssociationSet Name="FK__Movie__CategoryI__267ABA7A" Association="Self.FK__Movie__CategoryI__267ABA7A">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Movie" EntitySet="Movies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RentalMov__clien__1A14E395" Association="Self.FK__RentalMov__clien__1A14E395">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="RentalMovie" EntitySet="RentalMovies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RentalDet__Movie__2A4B4B5E" Association="Self.FK__RentalDet__Movie__2A4B4B5E">
+            <End Role="Movie" EntitySet="Movies" />
+            <End Role="RentalDetail" EntitySet="RentalDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RentalDet__Renta__29572725" Association="Self.FK__RentalDet__Renta__29572725">
+            <End Role="RentalMovie" EntitySet="RentalMovies" />
+            <End Role="RentalDetail" EntitySet="RentalDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RentalMov__Statu__1B0907CE" Association="Self.FK__RentalMov__Statu__1B0907CE">
+            <End Role="StatusRental" EntitySet="StatusRentals" />
+            <End Role="RentalMovie" EntitySet="RentalMovies" />
+          </AssociationSet>
+          <EntitySet Name="Usuarios" EntityType="TiendaPeliculasModel.Usuario" />
+          <AssociationSet Name="FK__RentalMov__UserI__31EC6D26" Association="TiendaPeliculasModel.FK__RentalMov__UserI__31EC6D26">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="RentalMovie" EntitySet="RentalMovies" />
+          </AssociationSet>
+          <EntitySet Name="ReturnMovies" EntityType="TiendaPeliculasModel.ReturnMovie" />
+          <AssociationSet Name="FK__ReturnMov__clien__37A5467C" Association="TiendaPeliculasModel.FK__ReturnMov__clien__37A5467C">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="ReturnMovie" EntitySet="ReturnMovies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ReturnMov__Movie__36B12243" Association="TiendaPeliculasModel.FK__ReturnMov__Movie__36B12243">
+            <End Role="Movie" EntitySet="Movies" />
+            <End Role="ReturnMovie" EntitySet="ReturnMovies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ReturnMov__Renta__38996AB5" Association="TiendaPeliculasModel.FK__ReturnMov__Renta__38996AB5">
+            <End Role="RentalDetail" EntitySet="RentalDetails" />
+            <End Role="ReturnMovie" EntitySet="ReturnMovies" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ReturnMov__UserI__398D8EEE" Association="TiendaPeliculasModel.FK__ReturnMov__UserI__398D8EEE">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="ReturnMovie" EntitySet="ReturnMovies" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UsarName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RentalMovies" Relationship="TiendaPeliculasModel.FK__RentalMov__UserI__31EC6D26" FromRole="Usuario" ToRole="RentalMovie" />
+          <NavigationProperty Name="ReturnMovies" Relationship="TiendaPeliculasModel.FK__ReturnMov__UserI__398D8EEE" FromRole="Usuario" ToRole="ReturnMovie" />
+        </EntityType>
+        <Association Name="FK__RentalMov__UserI__31EC6D26">
+          <End Type="TiendaPeliculasModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="TiendaPeliculasModel.RentalMovie" Role="RentalMovie" Multiplicity="*" />
+        </Association>
+        <EntityType Name="ReturnMovie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="DateReturn" Type="DateTime" Precision="3" />
+          <Property Name="Penality" Type="Boolean" />
+          <Property Name="Mount" Type="Double" />
+          <Property Name="Status" Type="Boolean" />
+          <NavigationProperty Name="Client" Relationship="TiendaPeliculasModel.FK__ReturnMov__clien__37A5467C" FromRole="ReturnMovie" ToRole="Client" />
+          <NavigationProperty Name="Movie" Relationship="TiendaPeliculasModel.FK__ReturnMov__Movie__36B12243" FromRole="ReturnMovie" ToRole="Movie" />
+          <NavigationProperty Name="RentalDetail" Relationship="TiendaPeliculasModel.FK__ReturnMov__Renta__38996AB5" FromRole="ReturnMovie" ToRole="RentalDetail" />
+          <NavigationProperty Name="Usuario" Relationship="TiendaPeliculasModel.FK__ReturnMov__UserI__398D8EEE" FromRole="ReturnMovie" ToRole="Usuario" />
+        </EntityType>
+        <Association Name="FK__ReturnMov__clien__37A5467C">
+          <End Type="TiendaPeliculasModel.Client" Role="Client" Multiplicity="1" />
+          <End Type="TiendaPeliculasModel.ReturnMovie" Role="ReturnMovie" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__ReturnMov__Movie__36B12243">
+          <End Type="TiendaPeliculasModel.Movie" Role="Movie" Multiplicity="0..1" />
+          <End Type="TiendaPeliculasModel.ReturnMovie" Role="ReturnMovie" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__ReturnMov__Renta__38996AB5">
+          <End Type="TiendaPeliculasModel.RentalDetail" Role="RentalDetail" Multiplicity="1" />
+          <End Type="TiendaPeliculasModel.ReturnMovie" Role="ReturnMovie" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__ReturnMov__UserI__398D8EEE">
+          <End Type="TiendaPeliculasModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="TiendaPeliculasModel.ReturnMovie" Role="ReturnMovie" Multiplicity="*" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="TiendaPeliculasModelStoreContainer" CdmEntityContainer="TiendaPeliculasEntities">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="TiendaPeliculasModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="TiendaPeliculasModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Adress" ColumnName="Adress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Movies">
+            <EntityTypeMapping TypeName="TiendaPeliculasModel.Movie">
+              <MappingFragment StoreEntitySet="Movie">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="Exhausted" ColumnName="Exhausted" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParametersRentals">
+            <EntityTypeMapping TypeName="TiendaPeliculasModel.ParametersRental">
+              <MappingFragment StoreEntitySet="ParametersRental">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CostPerday" ColumnName="CostPerday" />
+                <ScalarProperty Name="CostRental" ColumnName="CostRental" />
+                <ScalarProperty Name="CostRentalExhausted" ColumnName="CostRentalExhausted" />
+                <ScalarProperty Name="Penality" ColumnName="Penality" />
+                <ScalarProperty Name="MaxDay" ColumnName="MaxDay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RentalDetails">
+            <EntityTypeMapping TypeName="TiendaPeliculasModel.RentalDetail">
+              <MappingFragment StoreEntitySet="RentalDetail">
+                <ScalarProperty Name="isDevuelta" ColumnName="isDevuelta" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RentalMovies">
+            <EntityTypeMapping TypeName="TiendaPeliculasModel.RentalMovie">
+              <MappingFragment StoreEntitySet="RentalMovie">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DateRental" ColumnName="DateRental" />
+                <ScalarProperty Name="Days" ColumnName="Days" />
+                <ScalarProperty Name="DateRetund" ColumnName="DateRetund" />
+                <ScalarProperty Name="QuantityMovie" ColumnName="QuantityMovie" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatusRentals">
+            <EntityTypeMapping TypeName="TiendaPeliculasModel.StatusRental">
+              <MappingFragment StoreEntitySet="StatusRental">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK__Movie__CategoryI__267ABA7A" TypeName="TiendaPeliculasModel.FK__Movie__CategoryI__267ABA7A" StoreEntitySet="Movie">
+            <EndProperty Name="Category">
+              <ScalarProperty Name="Id" ColumnName="CategoryId" />
+            </EndProperty>
+            <EndProperty Name="Movie">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="CategoryId" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__RentalMov__clien__1A14E395" TypeName="TiendaPeliculasModel.FK__RentalMov__clien__1A14E395" StoreEntitySet="RentalMovie">
+            <EndProperty Name="Client">
+              <ScalarProperty Name="Id" ColumnName="clientId" />
+            </EndProperty>
+            <EndProperty Name="RentalMovie">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__RentalDet__Movie__2A4B4B5E" TypeName="TiendaPeliculasModel.FK__RentalDet__Movie__2A4B4B5E" StoreEntitySet="RentalDetail">
+            <EndProperty Name="Movie">
+              <ScalarProperty Name="Id" ColumnName="MovieId" />
+            </EndProperty>
+            <EndProperty Name="RentalDetail">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="MovieId" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__RentalDet__Renta__29572725" TypeName="TiendaPeliculasModel.FK__RentalDet__Renta__29572725" StoreEntitySet="RentalDetail">
+            <EndProperty Name="RentalMovie">
+              <ScalarProperty Name="Id" ColumnName="RentalId" />
+            </EndProperty>
+            <EndProperty Name="RentalDetail">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="RentalId" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__RentalMov__Statu__1B0907CE" TypeName="TiendaPeliculasModel.FK__RentalMov__Statu__1B0907CE" StoreEntitySet="RentalMovie">
+            <EndProperty Name="StatusRental">
+              <ScalarProperty Name="Id" ColumnName="StatusId" />
+            </EndProperty>
+            <EndProperty Name="RentalMovie">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="StatusId" />
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="TiendaPeliculasModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UsarName" ColumnName="UsarName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK__RentalMov__UserI__31EC6D26" TypeName="TiendaPeliculasModel.FK__RentalMov__UserI__31EC6D26" StoreEntitySet="RentalMovie">
+            <EndProperty Name="RentalMovie">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Usuario">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <Condition ColumnName="UserId" IsNull="false" />
+          </AssociationSetMapping>
+          <EntitySetMapping Name="ReturnMovies">
+            <EntityTypeMapping TypeName="TiendaPeliculasModel.ReturnMovie">
+              <MappingFragment StoreEntitySet="ReturnMovie">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Mount" ColumnName="Mount" />
+                <ScalarProperty Name="Penality" ColumnName="Penality" />
+                <ScalarProperty Name="DateReturn" ColumnName="DateReturn" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK__ReturnMov__clien__37A5467C" TypeName="TiendaPeliculasModel.FK__ReturnMov__clien__37A5467C" StoreEntitySet="ReturnMovie">
+            <EndProperty Name="ReturnMovie">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Client">
+              <ScalarProperty Name="Id" ColumnName="clientId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__ReturnMov__Movie__36B12243" TypeName="TiendaPeliculasModel.FK__ReturnMov__Movie__36B12243" StoreEntitySet="ReturnMovie">
+            <EndProperty Name="ReturnMovie">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Movie">
+              <ScalarProperty Name="Id" ColumnName="MovieId" />
+            </EndProperty>
+            <Condition ColumnName="MovieId" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__ReturnMov__Renta__38996AB5" TypeName="TiendaPeliculasModel.FK__ReturnMov__Renta__38996AB5" StoreEntitySet="ReturnMovie">
+            <EndProperty Name="ReturnMovie">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="RentalDetail">
+              <ScalarProperty Name="Id" ColumnName="RentalDetailsId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__ReturnMov__UserI__398D8EEE" TypeName="TiendaPeliculasModel.FK__ReturnMov__UserI__398D8EEE" StoreEntitySet="ReturnMovie">
+            <EndProperty Name="ReturnMovie">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Usuario">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <Condition ColumnName="UserId" IsNull="false" />
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="17227f1f07084203a3f6a0b55d70ff26" Name="Diagram1">
+        <EntityTypeShape EntityType="TiendaPeliculasModel.Category" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TiendaPeliculasModel.Client" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TiendaPeliculasModel.Movie" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TiendaPeliculasModel.ParametersRental" Width="1.5" PointX="5.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TiendaPeliculasModel.RentalDetail" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TiendaPeliculasModel.RentalMovie" Width="1.5" PointX="3" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TiendaPeliculasModel.StatusRental" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="TiendaPeliculasModel.FK__Movie__CategoryI__267ABA7A" ManuallyRouted="false" />
+        <AssociationConnector Association="TiendaPeliculasModel.FK__RentalMov__clien__1A14E395" ManuallyRouted="false" />
+        <AssociationConnector Association="TiendaPeliculasModel.FK__RentalDet__Movie__2A4B4B5E" ManuallyRouted="false" />
+        <AssociationConnector Association="TiendaPeliculasModel.FK__RentalDet__Renta__29572725" ManuallyRouted="false" />
+        <AssociationConnector Association="TiendaPeliculasModel.FK__RentalMov__Statu__1B0907CE" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TiendaPeliculasModel.Usuario" Width="1.5" PointX="11.75" PointY="4.375" />
+        <AssociationConnector Association="TiendaPeliculasModel.FK__RentalMov__UserI__31EC6D26" />
+        <EntityTypeShape EntityType="TiendaPeliculasModel.ReturnMovie" Width="1.5" PointX="9.375" PointY="2.25" />
+        <AssociationConnector Association="TiendaPeliculasModel.FK__ReturnMov__clien__37A5467C" />
+        <AssociationConnector Association="TiendaPeliculasModel.FK__ReturnMov__Movie__36B12243" />
+        <AssociationConnector Association="TiendaPeliculasModel.FK__ReturnMov__Renta__38996AB5" />
+        <AssociationConnector Association="TiendaPeliculasModel.FK__ReturnMov__UserI__398D8EEE" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
